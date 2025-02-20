@@ -12,6 +12,7 @@ btn.addEventListener("click", () => {
   } else {
     alert("add some tasks");
   }
+  saveData();
 });
 
 function deleteBtn(listItem) {
@@ -21,5 +22,28 @@ function deleteBtn(listItem) {
   listItem.appendChild(delBtn);
   delBtn.onclick = () => {
     listItem.remove();
+    saveData();
   };
+  saveData();
 }
+
+function saveData() {
+  localStorage.setItem("data", taskList.innerHTML);
+}
+
+function loadData() {
+  taskList.innerHTML = localStorage.getItem("data");
+  document.querySelectorAll("#taskList li").forEach((listItem) => {
+    let delBtn = listItem.querySelector("button"); // Check if button exists
+    if (!delBtn) {
+      deleteBtn(listItem);
+    } else {
+      delBtn.onclick = () => {
+        listItem.remove();
+        saveData();
+      };
+    }
+  });
+}
+
+loadData();
